@@ -1,0 +1,24 @@
+{
+  "name": "chessgame",
+  "version": "1.0.0",
+  "description": "Chess game using chess.js, chessboard.js and stockfish.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "autochess2"
+  },
+  "keywords": [
+    "chess",
+    "autochess"
+  ],
+  "author": "Andrew Taylor",
+  "license": "ISC",
+  "dependencies": {
+    "@chrisoakman/chessboardjs": "^1.0.0",
+    "chess.js": "^0.11.0",
+    "stockfish": "^11.0.0"
+  }
+}

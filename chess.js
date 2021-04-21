@@ -1,15 +1,19 @@
-var config = {
-  draggable: true,
-  position: 'start'
+// New game button
+var newGame = document.getElementById('newgame');
+
+newGame.onclick = function() {
+    var chessBoard = document.getElementById('chessboard');
+    newGame.style.display = 'none';
+    chessBoard.innerHTML = '<div id="myBoard" style="width: 400px"></div>';
+
+    startGame();
+};
+
+function startGame() {
+  
+  var board = Chessboard('myBoard', {
+    draggable: true,
+    dropOffBoard: 'trash',
+    sparePieces: true
+  })
 }
-var board = Chessboard('myBoard', config)
-
-function clickShowPositionBtn () {
-  console.log('Current position as an Object:')
-  console.log(board.position())
-
-  console.log('Current position as a FEN string:')
-  console.log(board.fen())
-}
-
-$('#showPositionBtn').on('click', clickShowPositionBtn)
