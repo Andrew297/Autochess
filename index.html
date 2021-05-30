@@ -14,13 +14,19 @@
 <body>
   <header>
     <h1>Autochess</h1>
+    <p>
+      Click New Game, set up a position either yourself or against a friend, using the draggable pieces, then let Stockfish do the work for you!
+    </p>
   </header>
+  <div class="container">
+    <div id="chessboard"></div>
+    <div id="gameOverMessage"></div>
+  </div>
   <div class="game">
     <button class="button" id="newgame">
       New Game
     </button>
   </div>
-  <div id="chessboard"></div>
   <footer></footer>
 </body>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>

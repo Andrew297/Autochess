@@ -27,6 +27,13 @@ function buildBoard() {
     return board;
 }
 
+function gameOver(str) {
+  var message = document.getElementById('gameOverMessage');
+  message.innerHTML = str;
+  message.style.visibility = "visible";
+  newGameBtn.style.display = 'none';
+}
+
 function getMoves(start_fen, board) {
     var stockfish = new Worker("node_modules/stockfish/src/stockfish.js");
     const chess = new Chess(start_fen);
@@ -47,28 +54,28 @@ function getMoves(start_fen, board) {
     // declares the winner and outputs the boardstates in positions
     function logResult() {
         if (current_position.includes('w')) {
-            console.log("Black wins");
+            gameOver("Black wins");
         } else {
-            console.log("White wins");
+            gameOver("White wins");
         }
     }
 
     // When uci sends a message (i.e. the string variable <line>) this code is
     // run. We print this message and search the message for various words to
     // decide whether there is important information we need to extract. Important
-    // information is: 
+    // information is:
     // (i) the bestmove, i.e. the move the stockfish decides to play,
     // (ii) the fen string of the boardstate after that move is played,
     // (iii) the time taken to make the move, so we can adjust wtime and btime.
     stockfish.onmessage = function(line)
     {
-        // console.log("Line: " + line.data)       
+        // console.log("Line: " + line.data)
         if (typeof line.data !== "string") {
             return;
         }
 
         if (line.data.indexOf("time") > -1) { // if line contains the string "time"...
-            
+
             // Extract the time taken to think. Note that stockfish gives us the
             // time taken to think multiple times before finding the bestmove, so
             // this variable get overwritten multiple times before being used.
@@ -76,7 +83,7 @@ function getMoves(start_fen, board) {
         }
 
         if (line.data.indexOf("bestmove") > -1) { // if line contains the string "bestmove"...
-            
+
             // Best move found so now we can subtract move_time from the time
             // white/black has left on the clock.
         if (current_position.includes('w')) { // if it is white's turn...
@@ -102,7 +109,7 @@ function getMoves(start_fen, board) {
                 } else {
                     console.log("Move: " + match[1]);
                     moves = moves + " " + match[1]; // store the move made, e.g. "e2e4"
-                    
+
                     // Update boardstate and position variables.
                     chess.move(match[1], { sloppy: true });
                     current_position = chess.fen();
@@ -127,14 +134,14 @@ function getMoves(start_fen, board) {
                     // Tell stockfish the new board position after making the recommended move.
                     position = "position fen " + start_fen + " moves" + moves;
                     send(position);
-                    
+
                     // This draws a chessboard to the console and sends a message. Importantly,
-                    // it also sends a message including the boardstate as a fen string. 
+                    // it also sends a message including the boardstate as a fen string.
                     send("d");
-                    
+
                     // Prints an evaluation of the current score to the console, e.g. +0.5
                     send("eval");
-                    
+
                     // Tell stockfish to search for the next move.
                     send("go btime " + btime + " wtime " + wtime);
                     return;
@@ -164,7 +171,7 @@ function getMoves(start_fen, board) {
 // async function playoutGame(board, moves) {
 //     for (var i = 0; i < moves.length; i++) {
 //         board.position(moves[i]);  // Apply i'th move
-//         await timer(500);          // Wait for 500ms so the game doesn't play out too fast 
+//         await timer(500);          // Wait for 500ms so the game doesn't play out too fast
 //         console.log(positions[i], moves[i]);  // See a history of boardstates/moves in the console
 //     }
 // }
